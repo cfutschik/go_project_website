@@ -1,14 +1,22 @@
 package main
 
-import "log"
+import (
+	"log"
+
+	"github.com/cfutschik/go_project_website.git/internal/env"
+	"github.com/cfutschik/go_project_website.git/internal/env/store"
+)
 
 func main() {
 	cfg := config{
-		addr: ":4001",
+		addr: env.GetString("ADDR", ":4001"),
 	}
+
+	store := store.NewStorage(nil)
 
 	app := &application{
 		config: cfg,
+		store:  store,
 	}
 
 	mux := app.mount()
