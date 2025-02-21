@@ -5,7 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/cfutschik/go_project_website.git/internal/env/store"
+	"github.com/cfutschik/go_project_website.git/internal/store"
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
 )
@@ -18,6 +18,7 @@ type application struct {
 type config struct {
 	addr string
 	db   dbConfig
+	env  string
 }
 
 type dbConfig struct {
