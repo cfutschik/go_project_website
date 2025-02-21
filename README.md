@@ -1,5 +1,5 @@
 # go_project_website
 
-Initial commit from terminal
-
-I AM TESTING THIS
+## Running Project
+Air is being used to dynamically run the project: `air`
+Env is being handled by *envrc*, to source: `direnv allow .`
