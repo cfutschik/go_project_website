@@ -28,6 +28,8 @@ func main() {
 		cfg.db.maxIdleConns,
 		cfg.db.maxIdleTime,
 	)
+	defer db.Close()
+
 	if err != nil {
 		log.Panicln("new db: %w", err)
 	}
