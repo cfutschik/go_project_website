@@ -10,8 +10,8 @@ import (
 )
 
 type createPostPayload struct {
-	Title   string   `json:"title"`
-	Content string   `json:"content"`
+	Title   string   `json:"title" validate:"required,max=100"`
+	Content string   `json:"content" validate:"required,max=1000"`
 	Tags    []string `json:"tags"`
 }
 
@@ -21,7 +21,9 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 		app.internalServerError(w, r, err)
 	}
 
-	ctx := r.Context()
+	if err := Validate.Struct(payload); err != nil {
+		app.badRequestError(w, r, err)
+	}
 
 	post := &store.Post{
 		Title:   payload.Title,
@@ -31,6 +33,7 @@ func (app *application) createPostHandler(w http.ResponseWriter, r *http.Request
 		UserID: 1,
 	}
 
+	ctx := r.Context()
 	if err := app.store.Posts.Create(ctx, post); err != nil {
 		//TODO: Handle various errors
 		app.internalServerError(w, r, err)
