@@ -89,8 +89,8 @@ func (app *application) deletPostHandler(w http.ResponseWriter, r *http.Request)
 }
 
 type UpdatePostPayload struct {
-	Title   string `json:"title" validate:"omitempty,max=100"`
-	Content string `json:"content" validate:"omitempty,max=1000"`
+	Title   *string `json:"title" validate:"omitempty,max=100"`
+	Content *string `json:"content" validate:"omitempty,max=1000"`
 }
 
 func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request) {
@@ -102,8 +102,17 @@ func (app *application) updatePostHandler(w http.ResponseWriter, r *http.Request
 		return
 	}
 
-	if err != Validate.Struct(payload); err != nil {
+	if err := Validate.Struct(payload); err != nil {
+		app.badRequestError(w, r, err)
+		return
+	}
 
+	if payload.Content != nil {
+		post.Content = *payload.Content
+	}
+
+	if payload.Title != nil {
+		post.Title = *payload.Content
 	}
 
 	if err := app.store.Posts.Update(r.Context(), post); err != nil {
