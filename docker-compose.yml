@@ -1,5 +1,5 @@
 services:
-  db: 
+  db:
     image: postgres:16.3
     container_name: project-postgres-db
     environment:
@@ -13,4 +13,4 @@ services:
       - "5434:5432"
 
 volumes:
-  db-data:oooo
+  db-data:

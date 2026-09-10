@@ -12,7 +12,6 @@ func New(addr string, maxOpenConns, maxIdleConns int, maxIdleTime string) (*sql.
 	if err != nil {
 		return nil, fmt.Errorf("sql connection: %w", err)
 	}
-	// defer db.Close()
 
 	db.SetMaxOpenConns(maxOpenConns)
 	db.SetMaxIdleConns(maxIdleConns)

@@ -23,7 +23,7 @@ func (u *UserStore) Create(ctx context.Context, user *User) error {
 		created_at
 	`
 
-	err := u.db.QueryRowContext(
+	if err := u.db.QueryRowContext(
 		ctx,
 		query,
 		user.Username,
@@ -32,11 +32,31 @@ func (u *UserStore) Create(ctx context.Context, user *User) error {
 	).Scan(
 		&user.ID,
 		&user.CreatedAt,
-	)
-
-	if err != nil {
+	); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (u *UserStore) GetByID(ctx context.Context, id int64) (*User, error) {
+	query := `SELECT * FROM users WHERE id = $1`
+
+	var user User
+
+	if err := u.db.QueryRowContext(
+		ctx,
+		query,
+		id).Scan(
+		&user.ID,
+		&user.Username,
+		&user.Email,
+		&user.Password,
+		&user.CreatedAt,
+	); err != nil {
+		return nil, err
+	}
+
+	return &user, nil
+
 }
